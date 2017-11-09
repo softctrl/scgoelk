@@ -92,10 +92,9 @@ func (__obj *Result) RemoveData() []byte {
 
 		return _buff.Bytes()
 
-	} else {
-		return nil
-	}
-
+	} 
+	return nil
+	
 }
 
 //
@@ -122,8 +121,7 @@ func (__obj *Result) RemoveData2() []byte {
 
 		return _buff.Bytes()
 
-	} else {
-		return nil
-	}
+	} 
+	return nil
 
 }
