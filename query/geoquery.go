@@ -32,7 +32,7 @@ const (
 //		"query":{
 //			"bool":{
 //				"must":[
-//					{"match":{"fn":"Anderson edson"}},
+//					{"match":{"fn":"Jhon Snow"}},
 //					{"match":{"mn":"Sueli"}}
 //				],
 //				"filter":{
