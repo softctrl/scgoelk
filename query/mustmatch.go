@@ -23,7 +23,7 @@ package query
 
 ////
 //// Based on:
-//// {"match":{"fn":"Anderson edson"}}
+//// {"match":{"fn":"Ned Stark"}}
 ////
 //type match struct {
 //}
