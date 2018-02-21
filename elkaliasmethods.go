@@ -15,13 +15,13 @@
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 // Lesser General Public License for more details.
 //
-package elk
+package scgoelk
 
 import (
 	b "bytes"
 	f "fmt"
 
-	scgu "github.com/softctrl/gutils/schttp"
+	scgu "github.com/softctrl/scgotils/schttp"
 )
 
 const (
@@ -34,7 +34,7 @@ const (
 func (__obj *SCElkClient) _MakeIndexAliasUrl(__index, __alias string) string {
 
 	var _buff b.Buffer
-	_buff.WriteString(MakeCommandUrlWithIndex(__obj._Server, __index, ALIAS))
+	_buff.WriteString(MakeCommandUrlWithIndex(__obj._Server, __obj._Port, __index, ALIAS))
 	_buff.WriteString(SLASH)
 	_buff.WriteString(__alias)
 	return _buff.String()
@@ -71,7 +71,7 @@ func (__obj *SCElkClient) RemoveAlias(__index, __alias string) ([]byte, error) {
 //  }
 //
 func (__obj *SCElkClient) ChangeAlias(__index_old, __index_new, __alias string) ([]byte, error) {
-	return scgu.PostBody(MakeCommandUrl(__obj._Server, ALIASES),
+	return scgu.PostBody(MakeCommandUrl(__obj._Server, __obj._Port, ALIASES),
 		[]byte(f.Sprintf(_UPDATE_ALIAS_JSON_FMT, __index_old, __alias, __index_new, __alias)))
 }
 
@@ -80,6 +80,6 @@ func (__obj *SCElkClient) ChangeAlias(__index_old, __index_new, __alias string) 
 //
 func (__obj *SCElkClient) GetAliases(__index string) ([]byte, error) {
 
-	return scgu.Get(MakeCommandUrlWithIndex(__obj._Server, __index, ALIAS))
+	return scgu.Get(MakeCommandUrlWithIndex(__obj._Server, __obj._Port, __index, ALIAS))
 
 }

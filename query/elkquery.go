@@ -47,7 +47,7 @@ package query
 import (
 	jsn "encoding/json"
 
-	scgu "github.com/softctrl/gutils"
+	scgu "github.com/softctrl/scgotils"
 )
 
 type ElkQuery struct {

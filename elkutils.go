@@ -15,15 +15,17 @@
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 // Lesser General Public License for more details.
 //
-package elk
+package scgoelk
 
 import (
 	"bytes"
 	"net/url"
+	scnv "strconv"
 )
 
 const (
 	SLASH                    = "/"
+	COLON                    = ":"
 	HEALTH_PATH              = "_cluster/health"
 	ALIAS                    = "_alias"
 	ALIASES                  = "_aliases"
@@ -36,10 +38,12 @@ var EMPTY_SEARCH_RESULT_JSON_BYTES = []byte(EMPTY_SEARCH_RESULT_JSON)
 //
 //
 //
-func MakeIndexUrl(__server, __index string) string {
+func MakeIndexUrl(__server string, __port int, __index string) string {
 
 	var buf bytes.Buffer
 	buf.WriteString(__server)
+	buf.WriteString(COLON)
+	buf.WriteString(scnv.Itoa(__port))
 	buf.WriteString(SLASH)
 	buf.WriteString(__index)
 	return buf.String()
@@ -49,10 +53,12 @@ func MakeIndexUrl(__server, __index string) string {
 //
 //
 //
-func MakeIndexTypeUrl(__server, __index, __type string) string {
+func MakeIndexTypeUrl(__server string, __port int, __index, __type string) string {
 
 	var buf bytes.Buffer
 	buf.WriteString(__server)
+	buf.WriteString(COLON)
+	buf.WriteString(scnv.Itoa(__port))
 	buf.WriteString(SLASH)
 	buf.WriteString(__index)
 	buf.WriteString(SLASH)
@@ -92,10 +98,12 @@ func MakeQueryUrl(__elk string) string {
 //
 //
 //
-func MakeCommandUrlWithIndex(__server, __index, __command string) string {
+func MakeCommandUrlWithIndex(__server string, __port int, __index, __command string) string {
 
 	var buf bytes.Buffer
 	buf.WriteString(__server)
+	buf.WriteString(COLON)
+	buf.WriteString(scnv.Itoa(__port))
 	buf.WriteString(SLASH)
 	buf.WriteString(__index)
 	buf.WriteString(SLASH)
@@ -107,10 +115,12 @@ func MakeCommandUrlWithIndex(__server, __index, __command string) string {
 //
 //
 //
-func MakeCommandUrl(__server, __command string) string {
+func MakeCommandUrl(__server string, __port int, __command string) string {
 
 	var buf bytes.Buffer
 	buf.WriteString(__server)
+	buf.WriteString(COLON)
+	buf.WriteString(scnv.Itoa(__port))
 	buf.WriteString(SLASH)
 	buf.WriteString(__command)
 	return buf.String()

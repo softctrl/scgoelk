@@ -1,5 +1,5 @@
-# Elk (Golang Client)
+# SCGoElk (Golang Client)
 
-Elk is a client for elasticsearch developed in Golang.
+SCGoElk is a client for elasticsearch developed in Golang.
 
 Under development.

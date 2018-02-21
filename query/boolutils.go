@@ -20,7 +20,7 @@ package query
 import (
 	f "fmt"
 
-	scs "github.com/softctrl/gutils"
+	scs "github.com/softctrl/scgotils"
 )
 
 const (

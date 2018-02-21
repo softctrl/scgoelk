@@ -15,7 +15,7 @@
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 // Lesser General Public License for more details.
 //
-package elk
+package scgoelk
 
 import (
 	b "bytes"
@@ -23,7 +23,7 @@ import (
 
 	"net/http"
 
-	"github.com/softctrl/gutils/schttp"
+	"github.com/softctrl/scgotils/schttp"
 )
 
 const HTTP_MESSAGE_ERROR = "One error ocurred. if it persistis, please contact support."
@@ -45,7 +45,7 @@ type SCData struct {
 // Create a instance object of SCElkClient.
 //
 func NewSCElkClient() *SCElkClient {
-	_res := SCElkClient{}
+	_res := SCElkClient{_Server: "http://localhost", _Port: 9200}
 	return &_res
 }
 
@@ -92,7 +92,8 @@ func (__obj *SCElkClient) Port(__port int) *SCElkClient {
 //
 func (__obj *SCElkClient) FindByQuery(__index, __type, __query string) ([]byte, error) {
 
-	_bytes, _err := schttp.Get(MakeQueryFilterUrl(MakeIndexTypeUrl(__obj._Server, __index, __type), __query))
+	_bytes, _err := schttp.Get(MakeQueryFilterUrl(MakeIndexTypeUrl(__obj._Server,
+		__obj._Port, __index, __type), __query))
 	if _err != nil {
 		return nil, err.New(HTTP_MESSAGE_ERROR)
 	} else {
@@ -106,7 +107,9 @@ func (__obj *SCElkClient) FindByQuery(__index, __type, __query string) ([]byte, 
 //
 func (__obj *SCElkClient) FindByJson(__index, __type string, __json []byte) ([]byte, error) {
 
-	_, _code, _bytes, _err := schttp.Perform(schttp.GET, MakeQueryUrl(MakeIndexTypeUrl(__obj._Server, __index, __type)), __json, nil)
+	_, _code, _bytes, _err := schttp.Perform(schttp.GET, MakeQueryUrl(
+		MakeIndexTypeUrl(__obj._Server, __obj._Port, __index, __type)),
+		__json, nil)
 	if _code != 200 || _err != nil {
 		return nil, err.New(HTTP_MESSAGE_ERROR)
 	} else {
@@ -121,14 +124,14 @@ func (__obj *SCElkClient) FindByJson(__index, __type string, __json []byte) ([]b
 //                                :D i'm messing wiht you, or not >:(
 //
 func (__obj *SCElkClient) Perform(__command schttp.Method, __url string, __body []byte, __header http.Header) (string, int, []byte, error) {
-	return schttp.Perform(__command, MakeCommandUrl(__obj._Server, __url), __body, __header)
+	return schttp.Perform(__command, MakeCommandUrl(__obj._Server, __obj._Port, __url), __body, __header)
 }
 
 //
 // Query for the cluster healt of the Elastic server.
 //
 func (__obj *SCElkClient) ClusterHealt() ([]byte, error) {
-	return schttp.Get(MakeCommandUrl(__obj._Server, HEALTH_PATH))
+	return schttp.Get(MakeCommandUrl(__obj._Server, __obj._Port, HEALTH_PATH))
 }
 
 //
@@ -136,7 +139,7 @@ func (__obj *SCElkClient) ClusterHealt() ([]byte, error) {
 //
 func (__obj *SCElkClient) BulkOperation(__document []byte) ([]byte, error) {
 
-	return schttp.PostBody(MakeCommandUrl(__obj._Server, BULK_COMMAND), __document)
+	return schttp.PostBody(MakeCommandUrl(__obj._Server, __obj._Port, BULK_COMMAND), __document)
 
 }
 
@@ -145,7 +148,8 @@ func (__obj *SCElkClient) BulkOperation(__document []byte) ([]byte, error) {
 //
 func (__obj *SCElkClient) Insert(__index, __type string, __document []byte) ([]byte, error) {
 
-	return schttp.PostBody(MakeIndexTypeUrl(__obj._Server, __index, __type), __document)
+	return schttp.PostBody(MakeIndexTypeUrl(__obj._Server, __obj._Port, __index,
+		__type), __document)
 
 }
 
