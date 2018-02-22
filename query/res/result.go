@@ -21,7 +21,7 @@ import (
 	"bytes"
 	jsn "encoding/json"
 
-	sc "github.com/softctrl/elk/query"
+	sc "github.com/softctrl/scgoelk/query"
 )
 
 const (
