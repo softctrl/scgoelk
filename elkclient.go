@@ -95,7 +95,7 @@ func (__obj *SCElkClient) FindByQuery(__index, __type, __query string) ([]byte, 
 	_bytes, _err := schttp.Get(MakeQueryFilterUrl(MakeIndexTypeUrl(__obj._Server,
 		__obj._Port, __index, __type), __query))
 	if _err != nil {
-		return nil, err.New(HTTP_MESSAGE_ERROR)
+		return nil, _err // err.New(HTTP_MESSAGE_ERROR)
 	} else {
 		return _bytes, nil
 	}
@@ -107,11 +107,17 @@ func (__obj *SCElkClient) FindByQuery(__index, __type, __query string) ([]byte, 
 //
 func (__obj *SCElkClient) FindByJson(__index, __type string, __json []byte) ([]byte, error) {
 
+	header := make(http.Header)
+	header.Add("Content-Type", "application/json")
 	_, _code, _bytes, _err := schttp.Perform(schttp.GET, MakeQueryUrl(
 		MakeIndexTypeUrl(__obj._Server, __obj._Port, __index, __type)),
-		__json, nil)
-	if _code != 200 || _err != nil {
-		return nil, err.New(HTTP_MESSAGE_ERROR)
+		__json, header)
+	if _code != 200 {
+		if _err == nil {
+			return _bytes, err.New(HTTP_MESSAGE_ERROR)
+		} else {
+			return _bytes, _err
+		}
 	} else {
 		return _bytes, nil
 	}
